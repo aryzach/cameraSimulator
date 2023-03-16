@@ -1,10 +1,12 @@
 from decimal import *
 import math
+import numpy as np
+import pprint
 
 _GRAVITATIONAL_CONSTANT = Decimal('6.67384E-11')
 _MASS_EARTH = Decimal('5.9722E24')  # kg
 _RADIUS_EARTH = Decimal('6.378E6')
-_FPS = 2/1000
+
 
 def radians(degrees):
     return (degrees * math.pi) / 180
@@ -57,9 +59,14 @@ def time_to_traverse_FOV(h1,h2,fov,inclination):
     return object_path_length(fov, diff) / relative_velocity(h1,h2,inclination)
 
 altitudes_sensor = [500]
-altitudes_debris = map(lambda x: Decimal(x+500),[.01,.05,.1,.13,.15,.2,.3,.4,.5,1,2])
-fovs = [14,38]
-inclinations = [0,45,90,135,180]
+arange = np.arange(.01,2,.01)
+altitudes_debris = list(map(lambda x: Decimal(x+500),arange.tolist()))
+fovs = [45]
+#inclinations = [0,45,90,135,180]
+inclinations = [180]
+fpss = [120, 240, 500, 800, 1000]
+
+diffDist_fov_fps_dict = {}
 
 for s in altitudes_sensor:
     for d in altitudes_debris:
@@ -69,11 +76,19 @@ for s in altitudes_sensor:
                     diff = round(abs(s-d),4)
                     t_hours = time_to_traverse_FOV(s,d,f,i)
                     t_sec = round(3600 * t_hours, 4)
-                    if t_sec < _FPS:
-                        print(
-                'altitude difference (km): {} \nfov (degrees): {} \ninclination (degrees): {} \nFOV traversal time (seconds): {} \n'.format(diff,f,i,t_sec))
+                    for fps in fpss:
+                        num_frames = t_sec * fps
+                        try:
+                            current = diffDist_fov_fps_dict[(diff,f)]
+                            if (num_frames > 2 and fps < current) or diffDist_fov_fps_dict.get(diff,f) == None:
+                                diffDist_fov_fps_dict[(diff,f)] = fps
+                            #print('altitude difference (km): {} \nfov (degrees): {} \ninclination (degrees): {} \nFOV traversal time (seconds): {} \n'.format(diff,f,i,t_sec))
+                        except:
+                            if (num_frames > 2):
+                                diffDist_fov_fps_dict[(diff,f)] = fps
 
-
+pp = pprint.PrettyPrinter(indent=4)
+pp.pprint(diffDist_fov_fps_dict)
 #print(time_to_traverse_FOV(500,501,45,180))
 #print(time_to_traverse_FOV(500,1000,45,0))
 #print(time_to_traverse_FOV(500,1500,45,0))
