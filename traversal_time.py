@@ -61,7 +61,7 @@ def time_to_traverse_FOV(h1,h2,fov,inclination):
 altitudes_sensor = [500]
 arange = np.arange(.01,2,.01)
 altitudes_debris = list(map(lambda x: Decimal(x+500),arange.tolist()))
-fovs = [45]
+fovs = [1]
 #inclinations = [0,45,90,135,180]
 inclinations = [180]
 fpss = [120, 240, 500, 800, 1000]
@@ -89,6 +89,7 @@ for s in altitudes_sensor:
 
 pp = pprint.PrettyPrinter(indent=4)
 pp.pprint(diffDist_fov_fps_dict)
+
 #print(time_to_traverse_FOV(500,501,45,180))
 #print(time_to_traverse_FOV(500,1000,45,0))
 #print(time_to_traverse_FOV(500,1500,45,0))
