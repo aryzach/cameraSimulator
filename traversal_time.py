@@ -94,6 +94,7 @@ for s in altitudes_sensor:
 pp = pprint.PrettyPrinter(indent=4)
 pp.pprint(diffDist_fov_fps_dict)
 pp.pprint(t_sec_dict)
+
 #print(time_to_traverse_FOV(500,501,45,180))
 #print(time_to_traverse_FOV(500,1000,45,0))
 #print(time_to_traverse_FOV(500,1500,45,0))
