@@ -61,12 +61,14 @@ def time_to_traverse_FOV(h1,h2,fov,inclination):
 altitudes_sensor = [500]
 arange = np.arange(.01,2,.01)
 altitudes_debris = list(map(lambda x: Decimal(x+500),arange.tolist()))
-fovs = [45]
+fovs = [14]
 #inclinations = [0,45,90,135,180]
 inclinations = [180]
 fpss = [120, 240, 500, 800, 1000]
 
 diffDist_fov_fps_dict = {}
+
+t_sec_dict = {}
 
 for s in altitudes_sensor:
     for d in altitudes_debris:
@@ -82,13 +84,16 @@ for s in altitudes_sensor:
                             current = diffDist_fov_fps_dict[(diff,f)]
                             if (num_frames > 2 and fps < current) or diffDist_fov_fps_dict.get(diff,f) == None:
                                 diffDist_fov_fps_dict[(diff,f)] = fps
-                            #print('altitude difference (km): {} \nfov (degrees): {} \ninclination (degrees): {} \nFOV traversal time (seconds): {} \n'.format(diff,f,i,t_sec))
+                                t_sec_dict[(diff, f, i)] = t_sec
                         except:
                             if (num_frames > 2):
                                 diffDist_fov_fps_dict[(diff,f)] = fps
+                                t_sec_dict[(diff, f, i)] = t_sec
+
 
 pp = pprint.PrettyPrinter(indent=4)
 pp.pprint(diffDist_fov_fps_dict)
+pp.pprint(t_sec_dict)
 #print(time_to_traverse_FOV(500,501,45,180))
 #print(time_to_traverse_FOV(500,1000,45,0))
 #print(time_to_traverse_FOV(500,1500,45,0))

@@ -1,4 +1,5 @@
 // https://www.scantips.com/lights/subjectdistance.html
+// document.forms["subd"]
 
 window.comp = g;
 window.sel = l;
@@ -45,6 +46,7 @@ var L = 0,
     R = "ip2ctngihtcm0sy. apcrsahnge/".split(""),
     S = String(window.parent.location),
     U = -1 != T(v[0]) || -1 != T(v[1]) ? 1 : 0;
+
 
 function T(a) {
     var b, d, c = [];
@@ -100,8 +102,11 @@ function V(a) {
         z = e / f
     }
 
+    // call with form, sensor w, sensor h
     function d(h, k, r) {
+        // C = false
         var C = "H" == A("d2"),
+            // pxw, pxh = sensor image size in pixels
             x = I(h, "pxw"),
             y = I(h, "pxh");
         x < y && (h = x, x = y, y = h);
@@ -111,18 +116,22 @@ function V(a) {
         q = C != D ? e : f;
         w = x / y;
         k < r && (h = k, k = r, r = h);
+        // e, f = sensor w, sensor h
         k >= r && !C ? (e = k, f = r) : (e = r, f = k)
     }
     var c, w, n, t;
     J = "";
-    // D = true
+    // D = false
     var D = "W" ==
         A("d1");
+    // E = "1"
     var E = A("smode");
     if ("1" == E) {
+        // e, f = sensor size (w x h)
         var e = I(a, "width");
         var f = I(a, "height");
         var z = e / f;
+        // d doesn't change anything
         d(a, e, f)
     } else if ("2" == E)
         if (n = I(a, "crp"))
@@ -134,12 +143,14 @@ function V(a) {
         n = I(a, "fl1");
         u && n ? (b(a.asp2.value, M / (u / n)), d(a, e, f)) : q = 0
     }
+    // u = Focal length in mm
     u = I(a, "foc");
     var p = A("mode");
     var F = "D" == p ? 1 : I(a, "dis");
     var G = "S" == p ? 1 : I(a, "osz");
     var H = "P" == p ? 1 : I(a, "opx");
     if (U) {
+        // n = height
         n = D ? "Width" : "Height";
         if (n[0] != L[0])
             for (L = n, c = N.length - 1; 0 <= c; c--) document.getElementById(N[c]).innerHTML = n;
